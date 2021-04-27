@@ -2,7 +2,7 @@ import "./style.css";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Searchbar from "./components/Searchbar/Searchbar.jsx";
 import ImageGallery from "./components/ImageGallery/ImageGallery.jsx";
-import { fetchImages } from "./components/ApiServices/Api";
+import { fetchImages } from "./ApiServices/Api";
 import { Component } from "react";
 import Button from "./components/Button/Button.jsx";
 import Loader from "react-loader-spinner";
@@ -20,7 +20,6 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.query !== this.state.query) {
-      this.reset();
       this.searchHits();
     }
 
@@ -50,6 +49,7 @@ class App extends Component {
 
   handleSubmit = (query) => {
     this.setState({ query: query });
+    this.reset()
   };
 
   loadMore = () => {
@@ -92,11 +92,9 @@ class App extends Component {
             timeout={3000}
           />
         ) : null}
+        <ImageGallery hits={hits} onOpenModal={this.onOpenModal} />
         {hits.length > 0 && (
-          <main>
-            <ImageGallery hits={hits} onOpenModal={this.onOpenModal} />
-            <Button title="Load more" onClick={this.loadMore} />{" "}
-          </main>
+          <Button title="Load more" onClick={this.loadMore} />
         )}
         {showModal && <Modal src={largeImageURL} onClose={this.toggleModal} />}
       </div>
